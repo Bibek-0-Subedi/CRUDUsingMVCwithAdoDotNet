@@ -21,4 +21,5 @@ namespace CRUDUsingMVCwithAdoDotNet.Models
         [Required(ErrorMessage = "Address field is required")]
         public string Address { get; set; }
     }
+
 }

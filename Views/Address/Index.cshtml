@@ -1,4 +1,64 @@
-﻿@model CRUDUsingMVCwithAdoDotNet.Models.DistrictModel
-@model CRUDUsingMVCwithAdoDotNet.Models.StateModel
-@model CRUDUsingMVCwithAdoDotNet.Models.LocalUnitModel
+﻿@model CRUDUsingMVCwithAdoDotNet.Models.ViewModel
 
+<h2>Ajax Demo</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4 form-horizontal">
+                <div class="form-group">
+                    <label class="col-md-6">State</label>
+                    <div class="col-md-6">
+                        <select id="stateDropDownList" class="form-control">
+                            <option value="Select">Select</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-6">District</label>
+                    <div class="col-md-6">
+                        <select id="districtDropDownList" class="form-control">
+                            @foreach (var item in Model.DistrictModel)
+                            {
+                                <option value=@item.DistrictName>@item.DistrictName</option>
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-6">Local Unit</label>
+                    <div class="col-md-6">
+                        <select id="districtDropDownList" class="form-control">
+                            @foreach (var item in Model.LocalUnitModel)
+                            {
+                                <option value=@item.LocalUnitName>@item.LocalUnitName</option>
+
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+        <script>
+
+            $(document).ready(function () {
+
+                //selecting dropdown list by id
+                $('#stateDropDownList').html('');
+                //initiating a varable
+                var options = '';
+                //addind the value of html in the variable options
+                options += '<option value="Select">Select</option>';
+                @foreach (var item in Model.StateModel)
+                {
+                    <option value=@item.StateName>@item.StateName</option>
+
+                }
+                //$('#countryDropDownList').append(options);
+
+            });
+        </script>
+    }

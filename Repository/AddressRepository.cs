@@ -25,7 +25,7 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
             connection();
             List<StateModel> stateList = new List<StateModel>();
 
-            SqlCommand com = new SqlCommand("GetStates", con);
+            SqlCommand com = new SqlCommand("Settings.GetStates", con);
             com.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(com);//RESEARCH IT
             DataTable dt = new DataTable();
@@ -54,7 +54,7 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
             connection();
             List<DistrictModel> districtList = new List<DistrictModel>();
 
-            SqlCommand com = new SqlCommand("GetDistricts", con);
+            SqlCommand com = new SqlCommand("Settings.GetDistricts", con);
             com.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataTable dt = new DataTable();
@@ -83,7 +83,7 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
             connection();
             List<LocalUnitModel> localUnitList = new List<LocalUnitModel>();
 
-            SqlCommand com = new SqlCommand("GetLocalUnits", con);
+            SqlCommand com = new SqlCommand("Settings.GetLocalUnits", con);
             com.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(com);
             DataTable dt = new DataTable();
