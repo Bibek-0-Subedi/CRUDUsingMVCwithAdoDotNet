@@ -15,11 +15,19 @@ namespace CRUDUsingMVCwithAdoDotNet.Models
         [Required(ErrorMessage = "Name field is required")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "City field is required")]
-        public string City { get; set; }
+        [Required(ErrorMessage = "State field is required")]
+        public string State { get; set; }
 
-        [Required(ErrorMessage = "Address field is required")]
-        public string Address { get; set; }
+        [Required(ErrorMessage = "District field is required")]
+        public string District { get; set; }
+
+        [Required(ErrorMessage = "LocalUnit field is required")]
+        public string LocalUnit { get; set; }
+
+        public List<StateModel> StateModel { get; set; }
+        public List<DistrictModel> DistrictModel { get; set; }
+        public List<LocalUnitModel> LocalUnitModel { get; set; }
     }
+
 
 }

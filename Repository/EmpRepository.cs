@@ -26,8 +26,9 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
             SqlCommand com = new SqlCommand("AddNewEmpDetails", con);
             com.CommandType = CommandType.StoredProcedure;
             com.Parameters.AddWithValue("@Name", obj.Name);
-            com.Parameters.AddWithValue("@City", obj.City);
-            com.Parameters.AddWithValue("@Address", obj.Address);
+            com.Parameters.AddWithValue("@State", obj.State);
+            com.Parameters.AddWithValue("@District", obj.District);
+            com.Parameters.AddWithValue("@LocalUnit", obj.LocalUnit);
 
             con.Open();
             int i = com.ExecuteNonQuery();
@@ -65,8 +66,9 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
                     {
                         Empid = Convert.ToInt32(dr["Id"]),
                         Name = Convert.ToString(dr["Name"]),
-                        City = Convert.ToString(dr["City"]),
-                        Address = Convert.ToString(dr["Address"])
+                        State = Convert.ToString(dr["State"]),
+                        District = Convert.ToString(dr["District"]),
+                        LocalUnit = Convert.ToString(dr["LocalUnit"])
                     }
                     );
             }
@@ -82,8 +84,9 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
             com.CommandType = CommandType.StoredProcedure;
             com.Parameters.AddWithValue("@EmpId", obj.Empid);
             com.Parameters.AddWithValue("@Name", obj.Name);
-            com.Parameters.AddWithValue("@City", obj.City);
-            com.Parameters.AddWithValue("@Address", obj.Address);
+            com.Parameters.AddWithValue("@State", obj.State);
+            com.Parameters.AddWithValue("@District", obj.District);
+            com.Parameters.AddWithValue("@LocalUnit", obj.LocalUnit);
             con.Open();
             int i = com.ExecuteNonQuery();
             con.Close();
@@ -115,6 +118,89 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
             {
                 return false;
             }
+        }
+
+        public List<StateModel> GetAllStates()
+        {
+            connection();
+            List<StateModel> stateList = new List<StateModel>();
+
+            SqlCommand com = new SqlCommand("Settings.GetStates", con);
+            com.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter da = new SqlDataAdapter(com);//RESEARCH IT
+            DataTable dt = new DataTable();
+
+            con.Open();
+            da.Fill(dt);
+            con.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                stateList.Add(
+                    new StateModel
+                    {
+                        StateId = Convert.ToInt32(dr["StateId"]),
+                        StateName = Convert.ToString(dr["StateName"]),
+                    });
+            }
+            return stateList;
+
+        }
+
+        //Get all districts
+        public List<DistrictModel> GetAllDistricts(string id)
+        {
+            connection();
+            List<DistrictModel> districtList = new List<DistrictModel>();
+
+            SqlCommand com = new SqlCommand("Settings.GetDistricts", con);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@StateId", id);
+            SqlDataAdapter da = new SqlDataAdapter(com);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            da.Fill(dt);
+            con.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                districtList.Add(
+                    new DistrictModel
+                    {
+                        DistrictId = Convert.ToInt32(dr["DistrictId"]),
+                        DistrictName = Convert.ToString(dr["DistrictName"]),
+                    });
+            }
+            return districtList;
+        }
+
+        //Get All LocalUnits
+        public List<LocalUnitModel> GetAllLocalUnitModels(string id)
+        {
+            connection();
+            List<LocalUnitModel> localUnitList = new List<LocalUnitModel>();
+
+            SqlCommand com = new SqlCommand("Settings.GetLocalUnits", con);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@DistrictId", id);
+            SqlDataAdapter da = new SqlDataAdapter(com);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            da.Fill(dt);
+            con.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                localUnitList.Add(
+                    new LocalUnitModel
+                    {
+                        LocalUnitId = Convert.ToInt32(dr["LocalUnitId"]),
+                        LocalUnitName = Convert.ToString(dr["LocalUnitName"]),
+                    });
+            }
+            return localUnitList;
         }
     }
 }

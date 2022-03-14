@@ -9,31 +9,37 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.City)
+            @Html.DisplayNameFor(model => model.State)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Address)
+            @Html.DisplayNameFor(model => model.District)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocalUnit)
         </th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "EditEmpDetails", new { id = item.Empid }) |
-                @Html.ActionLink("Delete", "DeleteEmp", new { id = item.Empid }, new { onclick = "return confirm('Are your sure you want to delete?');" })
-            </td>
-        </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.State)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.District)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.LocalUnit)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "EditEmpDetails", new { id = item.Empid }) |
+        @Html.ActionLink("Delete", "DeleteEmp", new { id = item.Empid }, new { onclick = "return confirm('Are your sure you want to delete?');" })
+    </td>
+</tr>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10" style="color:green">
                 @ViewBag.Message

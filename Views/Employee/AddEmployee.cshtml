@@ -18,18 +18,22 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.StateModel, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(model => model.StateModel, new SelectList(, "StateId", "StateName"), "Select State", new { @class = "form-control" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.DistrictModel, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(model => model.DistrictModel, new SelectList(""), "Select District", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.LocalUnitModel, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.LocalUnit, new SelectList(""), "Select Local Unit", new { @class = "form-control" })
         </div>
     </div>
 
@@ -53,4 +57,45 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+        //get district  list by state id
+        $("#s").removeAttr('disabled');
+        $(document).ready(function () {
+            $("#State").on("change", function () {
+                $.ajax({
+                    url: "/Employee/GetDistrict",
+                    type: "GET",
+                    dataType: "json",
+                    data: { id: $("#State").val() },
+                    success: function (data) {
+                        $("#District").html("");
+                        $("#LocalUnit").html("");
+                        $("#District").append("<option value='0'>Select District</option>");
+                        $("#LocalUnit").append("<option value='0'>Select Local Unit</option>");
+                        $.each(data, function (i, val) {
+
+                            $("#District").append("<option value=\"" + val.DistrictId + "\">" + val.DistrictName + "</option>");
+                        });
+                    }
+                })
+            })
+            //get local unit my district id
+            $("#districtDropDownList").on("change", function () {
+                $.ajax({
+                    url: "/Employee/GetLocalUnit",
+                    type: "GET",
+                    dataType: "json",
+                    data: { id: $("#District").val() },
+                    success: function (data) {
+                        $("#LocalUnit").html("");
+                        $("#LocalUnit").append("<option value='0'>Select Local Unit</option>");
+                        $.each(data, function (i, val) {
+
+                            $("#LocalUnit").append("<option value=\"" + val.LocalUnitId + "\">" + val.LocalUnitName + "</option>");
+                        });
+                    }
+                })
+            })
+        });
+</script>
 }

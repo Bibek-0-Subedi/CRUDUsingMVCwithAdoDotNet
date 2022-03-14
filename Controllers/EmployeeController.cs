@@ -92,6 +92,24 @@ namespace CRUDUsingMVCwithAdoDotNet.Controllers
                 return View();
             }
         }
+        public JsonResult GetState()
+        {
+            EmpRepository empRepository= new EmpRepository();
+            List<StateModel> st = empRepository.GetAllStates();
+            return Json(st, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetDistrict(string id)
+        {
+            EmpRepository empRepository = new EmpRepository();
+            List<DistrictModel> st = empRepository.GetAllDistricts(id);
+            return Json(st, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetLocalUnit(string id)
+        {
+            EmpRepository empRepository = new EmpRepository();
+            List<LocalUnitModel> st = empRepository.GetAllLocalUnitModels(id);
+            return Json(st, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }
