@@ -4,43 +4,47 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>EmpModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Empid)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
+<div class="form-horizontal">
+    <h4>EmpModel</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Empid)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.State, new SelectList(ViewBag.State, "StateId", "StateName"), "Select State", new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.District, new SelectList(""), "Select District", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.LocalUnit, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.LocalUnit, new SelectList(""), "Select Local Unit", new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
 <div>
@@ -49,4 +53,46 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        //get district  list by state id
+        $("#s").removeAttr('disabled');
+        $(document).ready(function () {
+            $("#State").on("change", function () {
+                $.ajax({
+                    url: "/Employee/GetDistrict",
+                    type: "GET",
+                    dataType: "json",
+                    data: { id: $("#State").val() },
+                    success: function (data) {
+                        $("#District").html("");
+                        $("#LocalUnit").html("");
+                        $("#District").append("<option value='0'>Select District</option>");
+                        $("#LocalUnit").append("<option value='0'>Select Local Unit</option>");
+                        $.each(data, function (i, val) {
+
+                            $("#District").append("<option value=\"" + val.DistrictId + "\">" + val.DistrictName + "</option>");
+                        });
+
+                    }
+                })
+            })
+            //get local unit my district id
+            $("#District").on("change", function () {
+                $.ajax({
+                    url: "/Employee/GetLocalUnit",
+                    type: "GET",
+                    dataType: "json",
+                    data: { id: $("#District").val() },
+                    success: function (data) {
+                        $("#LocalUnit").html("");
+                        $("#LocalUnit").append("<option value='0'>Select Local Unit</option>");
+                        $.each(data, function (i, val) {
+
+                            $("#LocalUnit").append("<option value=\"" + val.LocalUnitId + "\">" + val.LocalUnitName + "</option>");
+                        });
+                    }
+                })
+            })
+        });
+    </script>
 }

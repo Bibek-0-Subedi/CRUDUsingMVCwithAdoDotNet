@@ -51,8 +51,17 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
             List<EmpModel> EmpList = new List<EmpModel>();
 
             SqlCommand com = new SqlCommand("GetEmployees", con);
+            SqlCommand comState = new SqlCommand("GetStates", con);
+            SqlCommand comDistrict = new SqlCommand("GetDistricts", con);
+            SqlCommand comLocalUnit = new SqlCommand("GetLocalUnit", con);
             com.CommandType = CommandType.StoredProcedure;
+            comState.CommandType = CommandType.StoredProcedure;
+            comDistrict.CommandType = CommandType.StoredProcedure;
+            comLocalUnit.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(com);
+            SqlDataAdapter ds = new SqlDataAdapter(comState);
+            SqlDataAdapter dd = new SqlDataAdapter(comDistrict);
+            SqlDataAdapter dl = new SqlDataAdapter(comLocalUnit);
             DataTable dt = new DataTable();
 
             con.Open();
@@ -66,7 +75,9 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
                     {
                         Empid = Convert.ToInt32(dr["Id"]),
                         Name = Convert.ToString(dr["Name"]),
-                        State = Convert.ToString(dr["State"]),
+                        State = Convert.ToString(
+                            dr["State"]
+                            ),
                         District = Convert.ToString(dr["District"]),
                         LocalUnit = Convert.ToString(dr["LocalUnit"])
                     }
@@ -201,6 +212,82 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
                     });
             }
             return localUnitList;
+        }
+        //To add employee details
+        public bool AddUser(User obj)
+        {
+            connection();
+            SqlCommand com = new SqlCommand("AddNewUser", con);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@Username", obj.Username);
+            com.Parameters.AddWithValue("@Password", obj.Password);
+            com.Parameters.AddWithValue("@Email", obj.Email);
+
+            con.Open();
+            int i = com.ExecuteNonQuery();
+            con.Close();
+            if (i >= 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public List<User> GetAllUser()
+        {
+            connection();
+            List<User> userList = new List<User>();
+
+            SqlCommand com = new SqlCommand("GetAllUser", con);
+            com.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter da = new SqlDataAdapter(com);//RESEARCH IT
+            DataTable dt = new DataTable();
+
+            con.Open();
+            da.Fill(dt);
+            con.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                userList.Add(
+                    new User
+                    {
+                        Username = Convert.ToString(dr["Username"]),
+                        Email = Convert.ToString(dr["Email"]),
+                    });
+            }
+            return userList;
+
+        }
+
+        public User GetUserById(string username)
+        {
+            connection();
+            User user = new User();
+
+            SqlCommand com = new SqlCommand("GetUserDetails", con);
+            com.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter da = new SqlDataAdapter(com);//RESEARCH IT
+            DataTable dt = new DataTable();
+
+            con.Open();
+            da.Fill(dt);
+            con.Close();
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                user =  new User
+                    {
+                        Username = Convert.ToString(dr["Username"]),
+                        Email = Convert.ToString(dr["Email"]),
+                    };
+            }
+            return user;
+
         }
     }
 }

@@ -21,6 +21,8 @@ namespace CRUDUsingMVCwithAdoDotNet.Controllers
         //GET: Employee/AddEmployee
         public ActionResult AddEmployee()
         {
+            EmpRepository EmpRepo = new EmpRepository();
+            ViewBag.State = EmpRepo.GetAllStates();
             return View();
         }
 
@@ -52,7 +54,7 @@ namespace CRUDUsingMVCwithAdoDotNet.Controllers
         public ActionResult EditEmpDetails(int id)
         {
             EmpRepository EmpRepo = new EmpRepository();
-
+            ViewBag.State = EmpRepo.GetAllStates();
             return View(EmpRepo.GetAllEmployees().Find(Emp => Emp.Empid == id));
 
         }

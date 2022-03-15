@@ -18,20 +18,20 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.StateModel, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.StateModel, new SelectList(, "StateId", "StateName"), "Select State", new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.State, new SelectList(ViewBag.State, "StateId", "StateName"), "Select State", new { @class = "form-control" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.DistrictModel, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.DistrictModel, new SelectList(""), "Select District", new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.District, new SelectList(""), "Select District", new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.LocalUnitModel, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.LocalUnit, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.DropDownListFor(model => model.LocalUnit, new SelectList(""), "Select Local Unit", new { @class = "form-control" })
         </div>
@@ -76,11 +76,12 @@
 
                             $("#District").append("<option value=\"" + val.DistrictId + "\">" + val.DistrictName + "</option>");
                         });
+
                     }
                 })
             })
             //get local unit my district id
-            $("#districtDropDownList").on("change", function () {
+            $("#District").on("change", function () {
                 $.ajax({
                     url: "/Employee/GetLocalUnit",
                     type: "GET",
