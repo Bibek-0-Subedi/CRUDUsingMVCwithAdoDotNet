@@ -51,17 +51,8 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
             List<EmpModel> EmpList = new List<EmpModel>();
 
             SqlCommand com = new SqlCommand("GetEmployees", con);
-            SqlCommand comState = new SqlCommand("GetStates", con);
-            SqlCommand comDistrict = new SqlCommand("GetDistricts", con);
-            SqlCommand comLocalUnit = new SqlCommand("GetLocalUnit", con);
             com.CommandType = CommandType.StoredProcedure;
-            comState.CommandType = CommandType.StoredProcedure;
-            comDistrict.CommandType = CommandType.StoredProcedure;
-            comLocalUnit.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter da = new SqlDataAdapter(com);
-            SqlDataAdapter ds = new SqlDataAdapter(comState);
-            SqlDataAdapter dd = new SqlDataAdapter(comDistrict);
-            SqlDataAdapter dl = new SqlDataAdapter(comLocalUnit);
             DataTable dt = new DataTable();
 
             con.Open();
@@ -75,9 +66,7 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
                     {
                         Empid = Convert.ToInt32(dr["Id"]),
                         Name = Convert.ToString(dr["Name"]),
-                        State = Convert.ToString(
-                            dr["State"]
-                            ),
+                        State = Convert.ToString(dr["State"]),
                         District = Convert.ToString(dr["District"]),
                         LocalUnit = Convert.ToString(dr["LocalUnit"])
                     }
@@ -85,6 +74,30 @@ namespace CRUDUsingMVCwithAdoDotNet.Repository
             }
 
             return EmpList;
+        }
+        public EmpModel GetAllEmployeesById(int id)
+        {
+            connection();
+            List<EmpModel> EmpList = new List<EmpModel>();
+            SqlCommand com = new SqlCommand("GetEmployeesById", con);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@EmpId", id);
+            SqlDataAdapter da = new SqlDataAdapter(com);
+            DataTable dt = new DataTable();
+            con.Open();
+            da.Fill(dt);
+            con.Close();
+            //bind emp model generic list using datarow
+            EmpModel empModel = new EmpModel();
+            foreach (DataRow dr in dt.Rows)
+            {
+                empModel.Empid = Convert.ToInt32(dr["Id"]);
+                empModel.Name = Convert.ToString(dr["Name"]);
+                empModel.State = Convert.ToString(dr["State"]);
+                empModel.District = Convert.ToString(dr["District"]);
+                empModel.LocalUnit = Convert.ToString(dr["LocalUnit"]);
+            }
+            return empModel;
         }
         //To update Employee details 
         public bool UpdateEmployee(EmpModel obj)

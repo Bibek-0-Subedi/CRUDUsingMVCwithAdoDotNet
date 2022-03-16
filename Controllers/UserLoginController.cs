@@ -1,4 +1,4 @@
-﻿using CRUDUsingMVCwithAdoDotNet.Models;
+﻿/*using CRUDUsingMVCwithAdoDotNet.Models;
 using CRUDUsingMVCwithAdoDotNet.Repository;
 using System;
 using System.Collections.Generic;
@@ -18,13 +18,13 @@ namespace CRUDUsingMVCwithAdoDotNet.Controllers
         }
 
         [HttpPost]
-        /*public ActionResult Index(string username)
+        *//*public ActionResult Index(string username)
         {
             EmpRepository empRepository = new EmpRepository();
             User user = new User();
             user = empRepository.GetUserById(username);
             user.
 
-        }*/
+        }*//*
     }
-}
+}*/

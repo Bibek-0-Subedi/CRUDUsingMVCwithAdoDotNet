@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace CRUDUsingMVCwithAdoDotNet.Models
 {
@@ -26,9 +27,9 @@ namespace CRUDUsingMVCwithAdoDotNet.Models
         [Range(1, int.MaxValue, ErrorMessage = "You must select a LocalUnit")]
         public string LocalUnit { get; set; }
 
-        public List<StateModel> StateModel { get; set; }
-        public List<DistrictModel> DistrictModel { get; set; }
-        public List<LocalUnitModel> LocalUnitModel { get; set; }
+        public List<SelectListItem> StateModel { get; set; }
+        public List<SelectListItem> DistrictModel { get; set; }
+        public List<SelectListItem> LocalUnitModel { get; set; }
     }
 
 

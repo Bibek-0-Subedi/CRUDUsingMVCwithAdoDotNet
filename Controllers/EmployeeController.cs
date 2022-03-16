@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CRUDUsingMVCwithAdoDotNet.Controllers
 {
@@ -54,9 +55,49 @@ namespace CRUDUsingMVCwithAdoDotNet.Controllers
         public ActionResult EditEmpDetails(int id)
         {
             EmpRepository EmpRepo = new EmpRepository();
-            ViewBag.State = EmpRepo.GetAllStates();
-            return View(EmpRepo.GetAllEmployees().Find(Emp => Emp.Empid == id));
+            var empDetails = EmpRepo.GetAllEmployeesById(id);
+            //GetDistrictName(id)
+            var states = EmpRepo.GetAllStates();
+            var statesItems = new List<SelectListItem>();
 
+            foreach (var state in states)
+            {
+                statesItems.Add(new SelectListItem()
+                {
+                    Text = state.StateName,
+                    Value = state.StateId.ToString(),
+
+                    Selected = state.StateId.ToString() == empDetails.State ? true : false
+                });
+            }
+            empDetails.StateModel = statesItems;
+            //empDetails //for districts 
+            var district = EmpRepo.GetAllDistricts(empDetails.State);
+            var districtItems = new List<SelectListItem>();
+            foreach (var dis in district)
+            {
+                districtItems.Add(new SelectListItem()
+                {
+                    Text = dis.DistrictName,
+                    Value = dis.DistrictId.ToString(),
+                    Selected = dis.DistrictId.ToString() == empDetails.District ? true : false
+                });
+            }
+            empDetails.DistrictModel = districtItems;
+            //empDetails //for localUnit 
+            var localUnit = EmpRepo.GetAllLocalUnitModels(empDetails.District);
+            var localUnitItems = new List<SelectListItem>();
+            foreach (var local in localUnit)
+            {
+                localUnitItems.Add(new SelectListItem()
+                {
+                    Text = local.LocalUnitName,
+                    Value = local.LocalUnitId.ToString(),
+                    Selected = local.LocalUnitId.ToString() == empDetails.LocalUnit ? true : false
+                });
+            }
+            empDetails.LocalUnitModel = localUnitItems;
+            return View(empDetails);
         }
 
         //POST: Employee/EditEmpDetails/5
